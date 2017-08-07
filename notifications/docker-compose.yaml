@@ -1,0 +1,27 @@
+version: "2"
+
+volumes:
+  ipython_history: {}
+
+services:
+  rabbitmq:
+     image: rabbitmq:3.6.5
+     ports:
+       - "5672:5672"
+  rpc:
+    container_name: shipping_product
+    build: .
+    volumes:
+      - .:/service
+    depends_on:
+      - rabbitmq
+    ports:
+      - "8080:8090"
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "0.0.0.0"
+        RABBIT_PORT: "5672"
+        RABBIT_MANAGEMENT_PORT: "15672"
+
+    command: echo "Starting nameko"

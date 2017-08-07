@@ -1,0 +1,25 @@
+version: "2"
+
+volumes:
+  ipython_history: {}
+
+services:
+  rpc:
+    container_name: products
+    build: .
+    external_links:
+      - rabbit-day7:rabbit
+    ports:
+      - "8091:8099"
+    networks:
+      - shipments_backend
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"
+        RABBIT_MANAGEMENT_PORT: "15672"
+
+networks:
+  shipments_backend:
+    external: true
